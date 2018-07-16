@@ -14,7 +14,7 @@ Hãy cùng xem các ưu và nhược điểm của SQLite.
 
 - SQLite là đơn luồng. Vì vậy, nguy cơ hỏng dữ liệu được gỉam thiểu tối đa.
 
-- Cơ sở dữ liệu SQLite nằm trong một file. Vì vậy, chúng ta có thể di chuyển cơ sở dữ liệu và truy cập bởi nền tảng khác rất dễ dàng. 
+- Cơ sở dữ liệu SQLite nằm trong một file. Vì vậy, chúng ta có thể di chuyển và truy cập cơ sở dữ liệu bởi nền tảng khác rất dễ dàng. 
 
 - SQLite không yêu cầu thành phần quản trị đối với người dùng cuối. 
 
@@ -38,11 +38,11 @@ Bây giờ ta sẽ cố gắng tìm ra mẹo nhỏ để làm cho các thao tác
 
 **Chú ý: SQLite không bao giờ cho phép bạn thực hiện ROW LEVEL LOCK. Do vậy, ta không cần phải lãng phí thời gian để tìm kiếm về nó.**
 
-Tất nhiên nó có thể tác động đến hiệu năng nếu bạn thực hiện hành động ghi trên phần lớn bảng. Nhưng luồng thứ 2 sẽ phải không chờ lâu cho đến khi hành động đầu tiên kết thúc.
+Tất nhiên nó có thể tác động đến hiệu năng nếu bạn thực hiện hành động ghi trên phần lớn bảng. Nhưng luồng thứ 2 sẽ không phải chờ lâu cho đến khi hành động đầu tiên kết thúc.
 
 ![](https://media.licdn.com/dms/image/C5612AQFU1Qb1s5ET0w/article-inline_image-shrink_1000_1488/0?e=2128896000&v=beta&t=l4oDD044Ifz5bnf_9Z0mLqE8H10w5nIFL0AOojqQAw0)
 
-Bời vì như bạn biết index B TREE là rất nhanh. Và hành động GHI của bạn sẽ thực hiện dựa theo ID từng dòng mà đã được index theo mặc định.
+Bời vì như bạn biết đánh chỉ mục của B TREE rất nhanh. Và hành động GHI của bạn sẽ thực hiện dựa theo ID từng dòng mà đã được index theo mặc định.
 
 Ví dụ:
 
@@ -54,4 +54,4 @@ THAY BẰNG:
 
 **delete from table where ROWID in ( select rowid from tepm.Lock where name='fariz' and processid='XYZ' )** // việc xóa sẽ khóa file cơ sở dữ liệu trong 0,001 giây.
 
-Ta đã hoàn thành thử nghiệm nhỏ và kết quả là rất tốt. Ta cũng có thể thể hoàn thành 2 hành động cập nhật tương tự trong 11 giây, mỗi giao dịch mất 10 giây cho bảng bao gồm 40 triệu dòng.
+Tôi đã hoàn thành thử nghiệm nhỏ này và kết quả là rất tốt. Ta cũng có thể thể hoàn thành 2 hành động cập nhật tương tự trong 11 giây, mỗi giao dịch mất 10 giây cho bảng bao gồm 40 triệu dòng.
